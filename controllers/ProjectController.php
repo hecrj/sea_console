@@ -3,17 +3,16 @@
 class ProjectController extends Controller
 {
 	
-	public function _new($project_path)
+	public function _new($path)
 	{
-		if(empty($project_path))
+		if(empty($path))
 			exit('Empty project path.'."\n");
 		
-		echo 'Creating directories...'."\n";
-		system(sprintf('cp -r %s %s', DIR.'project/', escapeshellarg($project_path)));
+		echo 'Creating new project...'."\n";
 		
-		echo 'Downloading Sea framework into '. $project_path .'/lib...'."\n";
-		system(sprintf('git clone git://github.com/hector0193/hectamvc.git %s/lib', escapeshellarg($project_path)));
+		system(sprintf('git clone --recursive git://github.com/hector0193/sea_project.git %s', escapeshellarg($path)));
 		
+		echo 'Project created successfully.'."\n";
 	}
 	
 	public function help()
