@@ -1,0 +1,22 @@
+<?php
+
+define(WDIR, getcwd());
+
+// Load handler
+require(DIR . 'lib/Handler.php');
+
+// Load controller base class
+require(DIR . 'lib/Controller.php');
+
+// Initialize handler
+Handler::getControllerFor($argv, $argc)->init(Handler::getAction(), Handler::getArguments());
+
+function new_project($folder)
+{
+	if(empty($folder))
+		exit("Invalid folder.\n");
+	
+	system(sprintf('mkdir %s', escapeshellarg($folder)));
+}
+
+?>
