@@ -17,10 +17,23 @@ class ProjectController extends Controller
 	
 	public function help()
 	{
+		if(Handler::$options['v'] or Handler::$options['version'])
+		{
+			require(DIR . 'version.php');
+			require(DIR_CORE . 'version.php');
+			
+			exit(
+				'Sea console   '. Project\MAJOR .'.'. Project\MINOR .'.'. Project\TINY .' '. Project\PRE ."\n".
+				'Sea core'. Core\MAJOR .'.'. Core\MINOR .'.'. Core\TINY .' '. Core\PRE ."\n"
+			);
+		}
+		
 		echo	'Usage:'."\n".
 				'  sea new PROJECT_PATH'."\n".
 				"\n".
 				'Options:'."\n";
+				
+		print_r(Handler::$options);
 	}
 	
 }

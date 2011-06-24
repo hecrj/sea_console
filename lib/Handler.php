@@ -2,6 +2,7 @@
 
 class Handler {
 	
+	public static $options;
 	private static $console_path;
 	private static $controller;
 	private static $action;
@@ -12,17 +13,42 @@ class Handler {
 		// Console path
 		self::$console_path = array_shift($arguments);
 		
+		// Option search
+		$options = array();
+		
+		// Last key to look for options
+		$current = count($arguments) - 1;
+		
+		// While last argument starts with '-'
+		while($arguments[$current][0] == '-')
+		{	
+			if(preg_match('/^--?([a-z]+)(=(.*))?$/', $arguments[$current], $matches))
+			{
+				if(isset($matches[3]))
+					$options[$matches[1]] = $matches[3];
+				else
+					$options[$matches[1]] = true;
+			}
+			
+			unset($arguments[$current]);
+			$current --;
+		}
+		
+		// Options
+		self::$options = $options;
+		
 		// Action
 		self::$action = (array_shift($arguments)) ? : 'help';
-			
+		
+		// Controller
 		if(! is_file(WDIR . '.sea_project'))
 			self::$controller = 'project';
 			
 		else
 			self::$controller = (array_shift($arguments)) ? : 'main';
-
-		// Pop arguments
-		self::$arguments = array_pad((array)$arguments, 5, 0);
+		
+		// Arguments
+		self::$arguments = $arguments;
 		
 		// Controller name
 		$controller_name = ucwords(self::$controller) . 'Controller';
