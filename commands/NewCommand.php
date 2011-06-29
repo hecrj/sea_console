@@ -77,7 +77,7 @@ class NewCommand extends Command
 			$actions = array('index');
 		
 		// Create controller
-		File::create('Controller', 'app/controllers/', $controller_name, '.php', $checked_actions);
+		File::create('Controller', 'app/controllers/', $controller_name, '.php', $actions);
 		
 		// Create views
 		foreach($actions as $action)
