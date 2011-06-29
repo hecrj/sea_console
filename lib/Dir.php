@@ -13,7 +13,7 @@ class Dir
 			if(is_file($path))
 				return File::remove($path, $root);
 			else
-				return output('    '. yellow('invalid') .'    '. $path);
+				return Output::invalid($path);
 		}
 		
 		$objects = scandir(DIR_WORKING . $path); 
@@ -31,7 +31,7 @@ class Dir
 		}
 		
 		if($root and @rmdir(DIR_WORKING . $path))
-			output('    '. red('removed') .'    '. $path);
+			Output::removed($path);
 	}
 	
 }

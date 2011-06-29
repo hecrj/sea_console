@@ -24,6 +24,9 @@ class Console {
 		// Load functions
 		require(DIR . 'lib/Functions.php');
 		
+		// Load output class
+		require(DIR . 'lib/Output.php');
+		
 		// Load command base class
 		require(DIR . 'lib/Command.php');
 		
@@ -63,7 +66,10 @@ class Console {
 		catch(Exception $e)
 		{
 			// Output exception info and exit
-			exit('    '. red('exception') .'    '. $e->getMessage() ."\n");
+			Output::exception($e->getMessage());
+			
+			// End execution
+			exit;
 		}
 	
 	}

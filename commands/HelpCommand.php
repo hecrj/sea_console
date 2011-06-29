@@ -19,7 +19,7 @@ class HelpCommand extends Command
 			require(DIR . 'version.php');
 			require(DIR_CORE . 'version.php');
 			
-			output(
+			Output::text(
 				'Local versions:',
 				'  Sea console   '. Console\MAJOR .'.'. Console\MINOR .'.'. Console\TINY .' '. Console\PRE,
 				'  Sea core      '. Core\MAJOR .'.'. Core\MINOR .'.'. Core\TINY .' '. Core\PRE
@@ -28,7 +28,7 @@ class HelpCommand extends Command
 			exit;
 		}
 		
-		output(
+		Output::text(
 			'Usage:',
 			'  sea new PROJECT_PATH [options]',
 			'',

@@ -13,7 +13,9 @@ class RmCommand extends Command
 		'global'		=>	array('quiet' => 'q')
 	);
 	
-	protected $pregs = '/^([a-z]+)$/';
+	protected $pregs = array(
+		'global'	=>	'/^([a-z]+)$/'
+	);
 	
 	public function controller($controller)
 	{	

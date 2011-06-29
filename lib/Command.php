@@ -97,7 +97,7 @@ class Command {
 		for($current = count($arguments) - 1; $arguments[$current][0] == '-'; $current --)
 		{
 			// Find options like: -v, --version or --path=PATH
-			if(preg_match('/^(-([a-z])|--([a-z]+))(=(.*))?$/', $arguments[$current], $matches))
+			if(preg_match('/^(-([a-z])|--([a-z-]+))(=(.*))?$/', $arguments[$current], $matches))
 			{
 				// Unset option form &arguments
 				unset($arguments[$current]);
@@ -163,20 +163,39 @@ class Command {
 		// If regular expressions are defined (FALSE by default)
 		if($pregs = $this->pregs)
 		{
-			// If is not an array (GLOBAL expression)
-			if(! is_array($pregs))
+			// If global is set (GLOBAL expression)
+			if(isset($pregs['global']))
 			{
 				// Define anonymous function to check
 				$preg_check =
 					// An argument as a parameter and use $pregs (GLOBAL expression) and $part by reference
-					function($arg) use($pregs)
+					function($arg) use($pregs, &$part)
 					{
-						// Return if matches
-							return (bool)preg_match($pregs, $arg);
+						// Delete '<>' or '[]' of '<PART_NAME>' or '[PART_NAME]'
+						$part_name = substr($part, 1, -1);
+						
+						// If an specific expression exists
+						if(isset($pregs[$part_name]))
+						{
+							// And evaluates as true
+							if($pregs[$part_name])
+								// Return if matches
+								return (bool)preg_match($pregs[$part_name], $arg);
+								
+							// If evaluates as false
+							else
+								// Don't check and return true
+								return true;
+						}
+						
+						// If an specific expression does not exist
+						else
+							// Return if global matches
+							return (bool)preg_match($pregs['global'], $arg);
 					};
 			}
 			
-			// If is an array (SPECIFIC expressions)
+			// If global is not set (SPECIFIC expressions only)
 			else
 			{
 				// Define anonymous function to check
@@ -187,9 +206,11 @@ class Command {
 						// Delete '<>' or '[]' of '<PART_NAME>' or '[PART_NAME]'
 						$part_name = substr($part, 1, -1);
 						
-						// If is set an SPECIFIC expression for that PART_NAME and does not match
-						if(isset($pregs[$part_name]) && !preg_match($pregs[$part_name], $arg))
+						// If is set an SPECIFIC expression for that PART_NAME, evaluates to true and does not match
+						if(isset($pregs[$part_name]) and $pregs[$part_name] and !preg_match($pregs[$part_name], $arg))
 							return false;
+							
+						// In any other case, return true
 						else
 							return true;
 					};
@@ -234,7 +255,10 @@ class Command {
 				{
 					// Check regular expression
 					if(! $preg_check($argument))
-						output('    '. yellow('invalid') .'    '. $argument .' as '. $part);
+					{
+						Output::invalid($argument .' as '. $part);
+						continue;
+					}
 					
 					// Set argument into group
 					$group[] = $argument;

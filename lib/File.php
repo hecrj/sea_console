@@ -15,7 +15,7 @@ class File
 			ExceptionUnless(@mkdir(DIR_WORKING . $path, 0755, true), 'Impossible to create directory: '. $path);
 			
 		elseif(file_exists($full_path))
-			return output('    '. blue('skipped') .'    '. $rel_path);
+			return Output::skipped($rel_path);
 		
 		ob_start();
 		
@@ -26,9 +26,9 @@ class File
 		ob_end_clean();
 		
 		if(!@touch($full_path) or !@file_put_contents($full_path, $code) !== FALSE)
-			return output('    '. yellow('failed ') . '    '. $rel_path);
+			return Output::failed($rel_path);
 		
-		return output('    '. green('created') .'    '. $rel_path);
+		return Output::created($rel_path);
 	}
 	
 	public static function remove($path, $rmDir = false)
@@ -37,18 +37,18 @@ class File
 		$full_path = DIR_WORKING . $path;
 		
 		if(! is_file($full_path))
-			return output('    '. yellow('missing') .'    '. $path);
+			return Output::missing($path);
 		
 		ExceptionUnless(@unlink($full_path), 'Impossible to delete file: '. $path);
 		
-		output('    '. red('removed') .'    '. $path);
+		Output::removed($path);
 		
 		if($rmDir)
 		{
 			$file_dir = dirname($path);
 			
 			if(@rmdir($file_dir))
-				output('    '. red('removed') .'    '. substr($file_dir, strlen(WORKING_DIR)));
+				Output::removed(substr($file_dir, strlen(WORKING_DIR)));
 		}
 	}
 	

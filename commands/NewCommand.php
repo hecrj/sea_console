@@ -12,55 +12,59 @@ class NewCommand extends Command
 	
 	protected $cmd_options = array(
 		'global'		=>	array('quiet' => 'q'),
-		'project'		=>	array('remote' => 'r')
+		'project'		=>	array('remote' => 'r', 'no-git' => 'g')
 	);
 	
-	protected $pregs = '/^([a-z]+)$/';
+	protected $pregs = array(
+		'global'		=>	'/^([a-z0-9]+)$/',
+		'path'			=>	false
+	);
 	
 	protected $cmd_outside = 'project';
 	
-	public function project($path)
-	{
-		ExceptionIf(empty($path), 'Empty path project directory.');
-		
-		$path = escapeshellarg($path);
+	public function project($prj_path)
+	{	
+		$path = escapeshellarg($prj_path);
 		
 		if(Command::$options['r'])
 		{	
-			output(
+			Output::working(
 				'Creating new project remotely...',
 				'Downloading last Sea project version...'
 			);
 			system(sprintf('git clone --quiet git://github.com/hector0193/sea_project.git %s', $path));
 			
-			output('Initializing Sea core submodule...');
+			Output::working('Initializing Sea core submodule...');
 			system(sprintf('cd %s && git submodule --quiet init core', $path));
 			
-			output('Downloading Sea core as project submodule...');
+			Output::working('Downloading Sea core as project submodule...');
 			system(sprintf('cd %s && git submodule --quiet update core &> /dev/null', $path));
 		}
 		else
 		{
-			output(
+			Output::working(
 				'Creating new project...',
 				'Copying project data...'
 			);
 			system(sprintf('git clone --quiet %s %s', DIR_PROJECT, $path));
 			
-			output('Initializing core submodule...');
+			Output::working('Initializing core submodule...');
 			system(sprintf('cd %s && git submodule --quiet init core', $path));
 			
-			output('Copying core submodule locally...');
+			Output::working('Copying core submodule locally...');
 			system(sprintf('cd %s && git clone --quiet %s core', $path, DIR_CORE));
 			
-			output('Getting Sea core submodule url...');
+			Output::working('Getting Sea core submodule url...');
 			$core_url = exec(sprintf('cd %s && git config --get submodule.core.url', $path));
 			
-			output('Setting remote URLs...');
+			Output::working('Setting remote URLs...');
 			system(sprintf('cd %s && git remote set-url origin git://github.com/hector0193/sea_project.git && cd core && git remote set-url origin %s', $path, $core_url));
 		}
 		
-		output('Project created successfully.');
+		if(Command::$options['g'])
+			Dir::remove($prj_path .'/.git/', true);
+		
+		Output::success('Project created successfully.');
 	}
 	
 	public function controller($controller, $actions)
