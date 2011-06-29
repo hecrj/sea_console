@@ -1,15 +1,9 @@
 <?php
 
-define(DIR_CORE, DIR . 'project/lib/');
-define(WDIR, getcwd());
+// Load console
+require(DIR . 'lib/Console.php');
 
-// Load handler
-require(DIR . 'lib/Handler.php');
-
-// Load controller base class
-require(DIR . 'lib/Controller.php');
-
-// Initialize handler
-Handler::getControllerFor($argv, $argc)->init(Handler::getAction(), Handler::getArguments());
+// Initialize console
+Console::init($argv, $argc);
 
 ?>

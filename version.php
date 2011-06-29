@@ -1,6 +1,6 @@
 <?php
 
-namespace Project;
+namespace Console;
 
 const MAJOR	=	1;
 const MINOR	=	0;
