@@ -1,56 +1,65 @@
 <?php
 
-# Command class
-class Command {
+namespace Core\Commands;
+use Core\Components\DynamicInjector;
+use Core\Components\Arguments;
+
+abstract class CommandAbstract {
 	
-	public static $options = array();
+	protected $options = array();
 	protected $syntax;
 	protected $cmd_options = false;
 	protected $pregs = false;
 	protected $cmd_outside;
+	private $injector;
 	
-	public function __construct()
+	
+	public function __construct(DynamicInjector $injector)
 	{
-		
+		$this->injector = $injector;
 	}
 	
-	public function init($arguments)
+	protected function get($name)
+	{
+		return $this->injector->get($name);
+	}
+	
+	public function init(Arguments $arguments)
 	{
 		// If working dir is not a Sea project
 		if(! is_file(DIR_WORKING . '.sea_project'))
 		{
-			ExceptionUnless(isset($this->cmd_outside), 'Command not available outside Sea project directory.');
+			if(! isset($this->cmd_outside))
+					throw new \RuntimeException('This command is not available outside Sea project directory.');
 			
 			// Set subcommand
 			$subcmd = $this->cmd_outside;
 		}
 
-		else // If working dir is a Sea project
-			// Get subcommand from arguments
-			$subcmd = array_shift($arguments);
+		else
+			$subcmd = $arguments->shift();
 		
 		// Show help if the action method doesn't exist
 		if(empty($subcmd) or ! method_exists($this, $subcmd))
 			return $this->help();
 		
 		// Reflection to check type of method
-		$Reflection = new ReflectionMethod($this, $subcmd);
+		$Reflection = new \ReflectionMethod($this, $subcmd);
 
 		// Show help if the method isn't public
 		if(! $Reflection->isPublic())
 			return $this->help();
 		
-		// Get command options
-		Command::$options = $this->getOptionsFor($subcmd, $arguments);
-		
 		// Get command arguments
-		$args = $this->getArgsFor($subcmd, $arguments);
+		$arguments->prepare($this->syntax[$subcmd]);
 		
 		// Get number of required parameters
 		$num_params	= $Reflection->getNumberOfRequiredParameters();
 		
+		$args = $arguments->get();
+		
 		// Get number of args
-		$num_args	= count($args);
+		$num_args = count($args);
 		
 		// If there are more required parameters than args
 		if($num_params > $num_args)
@@ -76,72 +85,6 @@ class Command {
 	public function help()
 	{
 		// Default subcommand help
-	}
-	
-	private function getOptionsFor($subcmd, Array &$arguments)
-	{
-		if(! $this->cmd_options)
-			return array();
-		
-		// Merge arrays of options
-		$available = array_merge((array)$this->cmd_options['global'], (array)$this->cmd_options[$subcmd]);
-		
-		// If no command options
-		if(empty($available))
-			return array();
-		
-		// Init option array
-		$options = array();
-		
-		// Look for options from the end of arguments
-		for($current = count($arguments) - 1; $arguments[$current][0] == '-'; $current --)
-		{
-			// Find options like: -v, --version or --path=PATH
-			if(preg_match('/^(-([a-z])|--([a-z-]+))(=(.*))?$/', $arguments[$current], $matches))
-			{
-				// Unset option form &arguments
-				unset($arguments[$current]);
-				
-				// If matches[3] is set it means the option is like --option
-				if(isset($matches[3]))
-				{
-					// If option is set in available options
-					if(isset($available[$matches[3]]))
-						// Key is the value of the available option (like -o)
-						$key = $available[$matches[3]];
-					
-					// If option is not an available option
-					else
-						continue;
-				}
-				
-				// If matches[3] is not set, it means the option is like -o
-				else
-				{
-					// If the option is in the avaliable options
-					if(in_array($matches[2], $available))
-						// Key is option name
-						$key = $matches[2];
-					
-					// If the option is not in the available options
-					else
-						continue;
-				}
-				
-				// If matches[4] is set, it means the option is like -o=VALUE or --option=VALUE
-				if(isset($matches[4]))
-					// Set option value
-					$options[$key] = $matches[5];
-				
-				// If matches[4] is not set, it means the option is normal
-				else
-					// Set option to true (active)
-					$options[$key] = true;
-			}
-		}
-		
-		// Return options array
-		return $options;
 	}
 	
 	private function getArgsFor($subcmd, Array $arguments)
@@ -274,6 +217,11 @@ class Command {
 		
 		// Return args
 		return $args;
+	}
+	
+	public static function getCommandClass($commandName)
+	{
+		return __NAMESPACE__ .'\\'. ucfirst($commandName) .'Command';
 	}
 	
 }

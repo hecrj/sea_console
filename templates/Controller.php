@@ -1,16 +1,16 @@
 <?php echo '<?php'."\n"; ?>
 
-# <?=$name?> class
-class <?=$name?> extends Controller
+namespace App\Controllers;
+use Core\Controller;
+
+class <?php echo $name ?> extends Controller
 {
 
-<?php foreach($data as $action): ?>
-	public function <?=$action?>()
+<?php foreach($actions as $action): ?>
+	public function <?php echo $action ?>()
 	{
 		
 	}
 
 <?php endforeach; ?>
 }
-
-?>

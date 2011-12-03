@@ -1,9 +1,22 @@
 <?php
 
-// Load console
-require(DIR . 'lib/Console.php');
+define(DIR_WORKING, getcwd() .'/');
+define(DIR_PROJECT, DIR . 'project/');
+define(DIR_CORE, DIR . 'project/core/');
 
-// Initialize console
-Console::init($argv, $argc);
+require(DIR . 'core/components/Autoloader.php');
+
+$autoloader = new Core\Components\Autoloader;
+$autoloader->register();
+
+$classes = array(
+	'Arguments'		=>	'Core\\Components\\Arguments',
+	'Command'		=>	'Core\\Commands\\CommandAbstract',
+	'Console'		=>	'Core\\Console',
+	'Injector'		=>	'Core\\Components\\Injector'
+);
+
+$console = new $classes['Console']($classes);
+$console->init($argv, $argc);
 
 ?>

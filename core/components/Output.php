@@ -1,5 +1,7 @@
 <?php
 
+namespace Core\Components;
+
 class Output
 {
 	
@@ -16,30 +18,36 @@ class Output
 		'working'	=> 'green',
 		'success'	=> 'green',
 		'created'	=> 'green',
+		'written'	=> 'cyan',
 		'skipped'	=> 'blue',
+		'failure'	=> 'red',
 		'removed'	=> 'red',
 		'exception' => 'red',
 		'invalid'	=> 'yellow',
 		'missing'	=> 'yellow'
 	);
 	
-	public static function text()
+	private $options;
+	
+	public function __construct(Options $options)
 	{
-		if(Command::$options['q'])
-			return false;
+		$this->options = $options;
+	}
+	
+	public function text()
+	{
+		//if(Command::$options['q'])
+		//	return false;
 
 		$outputs = func_get_args();
 
 		foreach($outputs as $output)
-		{
-
 			echo $output ."\n";
-		}
 	}
 	
-	public static function __callStatic($action, $arguments)
+	public function __call($action, $arguments)
 	{
-		if(Command::$options['q'])
+		if($this->options->is('q', 'quiet'))
 			return false;
 		
 		foreach($arguments as $argument)
@@ -47,5 +55,3 @@ class Output
 	}
 	
 }
-
-?>
