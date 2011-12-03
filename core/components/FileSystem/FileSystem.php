@@ -43,6 +43,7 @@ class FileSystem
 		if(! $this->file->create($fullPath))
 			return false;
 		
+		$this->set('path', $fullPath);
 		$content = $this->getContentFromTemplate($template);
 		
 		$this->file->write($content, $fullPath);
