@@ -32,11 +32,12 @@ class Arguments
 		$arguments = array();
 		
 		$key = count($this->arguments) - 1;
-		while(preg_match($preg, $this->arguments[$key], $match))
+		
+		while($key >= 0 and preg_match($preg, $this->arguments[$key], $match))
 		{
 			$arguments[] = $match;
 			unset($this->arguments[$key]);
-			
+
 			--$key;
 		}
 		

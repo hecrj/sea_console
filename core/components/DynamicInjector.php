@@ -30,7 +30,7 @@ abstract class DynamicInjector
 		if(!isset($this->classes[$name]))
 			throw new \RuntimeException('Unsetted class name: '. $name .'. Check your class: '. get_class($this));
 		
-		return $this->saveInstance($name, $this->inject($this->classes[$name], $this->dependencies[$name]));
+		return $this->saveInstance($name, $this->inject($name));
 	}
 	
 	private function saveInstance($name, $instance)
@@ -41,13 +41,18 @@ abstract class DynamicInjector
 		return $instance;
 	}
 	
-	public function inject($class_name, $dependencies = null)
+	public function inject($name, $dependencies = null)
 	{
+		$class_name = $this->classes[$name];
+		$dependencies = array();
+
+		if(isset($this->dependencies[$name]))
+			$dependencies = $this->dependencies[$name];
+
 		$injections = array();
 		
-		if(is_array($dependencies))
-			foreach($dependencies as $dependency)
-				$injections[] = $this->getDependency($dependency);
+		foreach($dependencies as $dependency)
+			$injections[] = $this->getDependency($dependency);
 		
 		$inject_num = count($injections);
 		
@@ -85,7 +90,7 @@ abstract class DynamicInjector
 				throw new \RuntimeException('Dependency not present in classes list or in instances of the injector: '. $name .'. Check your class: '. get_class($this));
 		}
 		
-		return $this->saveInstance($name, $this->inject($this->classes[$name], $this->dependencies[$name]));
+		return $this->saveInstance($name, $this->inject($name));
 	}
 }
 

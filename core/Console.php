@@ -14,7 +14,7 @@ class Console {
 	
 	public function init($arguments, $num)
 	{	
-		define(NAME_PREG, '/^([a-z]+)$/');
+		define("NAME_PREG", '/^([a-z]+)$/');
 		
 		$injector = new $this->classes['Injector'];
 		
