@@ -1,7 +1,0 @@
-#!/usr/bin/php
-<?php
-
-const DIR = "/your/sea_console/directory/here/"; // '/' ended
-
-require(DIR . '/console');
-
