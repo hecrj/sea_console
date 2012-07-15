@@ -28,10 +28,10 @@ class InstallCommand extends CommandAbstract
 			else
 			{
 				$output->working('Initializing and updating project submodule...');
-				system('git submodule --quiet update --init project');
+				system('git submodule --quiet update --init project &> /dev/null');
 
 				$output->working('Initializing and updating core submodule...');
-				system('cd project && git submodule --quiet update --init core');
+				system('cd project && git submodule --quiet update --init core &> /dev/null');
 
 				$output->working('Installing Sea framework console...');
 
