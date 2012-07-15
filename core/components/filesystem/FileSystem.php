@@ -55,7 +55,7 @@ class FileSystem
 		ob_start();
 		
 		extract($this->data);
-		require('templates/'. $template .'.php');
+		require(DIR . 'templates/'. $template .'.php');
 		
 		$content = ob_get_contents();
 		
