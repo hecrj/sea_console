@@ -27,6 +27,12 @@ class InstallCommand extends CommandAbstract
 				$output->skipped('Sea console is already installed!');
 			else
 			{
+				$output->working('Initializing and updating project submodule...');
+				system('git submodule --quiet update --init project');
+
+				$output->working('Initializing and updating core submodule...');
+				system('cd project && git submodule --quiet update --init core');
+
 				$output->working('Installing Sea framework console...');
 
 				$this->get('filesys')
