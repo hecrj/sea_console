@@ -13,6 +13,7 @@ class FileSystem
 	{
 		$this->dir = $dir;
 		$this->file = $file;
+		$this->path = '';
 		$this->data = array();
 	}
 	
@@ -37,7 +38,7 @@ class FileSystem
 	{
 		$fullPath = $this->path . $filename . $extension;
 		
-		if(!file_exists(DIR_WORKING . $this->path))
+		if(!empty($this->path) and !file_exists($this->path))
 			$this->dir->create($this->path);
 		
 		if(! $this->file->create($fullPath))
@@ -54,7 +55,7 @@ class FileSystem
 		ob_start();
 		
 		extract($this->data);
-		require(DIR . 'templates/'. $template .'.php');
+		require('templates/'. $template .'.php');
 		
 		$content = ob_get_contents();
 		

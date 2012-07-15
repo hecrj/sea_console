@@ -16,7 +16,7 @@ class Dir
 	
 	public function create($path)
 	{
-		if(!@mkdir(DIR_WORKING . $path, 0755, true))
+		if(!@mkdir($path, 0755, true))
 			throw new \RuntimeException('Impossible to create directory: '. $path);
 		
 		$this->output->created($path);
@@ -25,13 +25,13 @@ class Dir
 	
 	public function clean($path)
 	{
-		if(! file_exists(DIR_WORKING . $path))
+		if(! file_exists($path))
 		{
 			$this->output->missing($path);
 			return false;
 		}
 		
-		if(! is_dir(DIR_WORKING . $path))
+		if(! is_dir($path))
 			throw new \RuntimeException('Impossible to clean the path: '. $path .' because is not a directory.');
 		
 		$this->removeFiles($path);
@@ -40,14 +40,14 @@ class Dir
 	
 	private function removeFiles($path)
 	{
-		$objects = scandir(DIR_WORKING . $path); 
+		$objects = scandir($path); 
 			
 		foreach($objects as $object)
 		{
 			if($object == '.' or $object == '..')
 				continue;
 			
-			if(is_dir(DIR_WORKING . $path . $object))
+			if(is_dir($path . $object))
 				$this->remove($path . $object);
 
 			else
@@ -60,7 +60,7 @@ class Dir
 		if(! $this->clean($path))
 			return false;
 		
-		if(!@rmdir(DIR_WORKING . $path))
+		if(!@rmdir($path))
 			throw new \RuntimeException('Impossible to remove directory: '. $path .'. Check the directory permissions.');
 		
 		$this->output->removed($path);

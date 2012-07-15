@@ -14,13 +14,13 @@ class File
 	
 	public function create($path)
 	{
-		if(file_exists(DIR_WORKING . $path))
+		if(file_exists($path))
 		{
 			$this->output->skipped($path);
 			return false;
 		}
 		
-		if(!@touch(DIR_WORKING . $path))
+		if(!@touch($path))
 			throw new \RuntimeException('Impossible to create file: '. $path .'. Please, check your directory '.
 					'permissions.');
 		
@@ -31,7 +31,7 @@ class File
 	
 	public function write($content, $path)
 	{
-		if(@file_put_contents(DIR_WORKING . $path, $content) === FALSE)
+		if(@file_put_contents($path, $content) === FALSE)
 			throw new \RuntimeException('Impossible to write contents to file: '. $path .'. Please, check your '.
 					'directory permissions.');
 		
@@ -41,13 +41,13 @@ class File
 	
 	public function remove($path)
 	{
-		if(! is_file(DIR_WORKING . $path))
+		if(! is_file($path))
 		{
 			$this->output->missing($path);
 			return false;
 		}
 		
-		if(! @unlink(DIR_WORKING . $path))
+		if(! @unlink($path))
 			throw new \RuntimeException('Impossible to remove file: '. $path .'. Please, check your directory '.
 					'permissions.');
 		

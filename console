@@ -1,8 +1,9 @@
 <?php
 
-define("DIR_WORKING", getcwd() .'/');
-define("DIR_PROJECT", DIR . 'project/');
-define("DIR_CORE", DIR . 'project/core/');
+define('DIR', dirname(__DIR__) . '/sea_console/');
+define('DIR_WORKING', getcwd() .'/');
+define('DIR_PROJECT', DIR . 'project/');
+define('DIR_CORE', DIR . 'project/core/');
 
 require(DIR . 'core/components/Autoloader.php');
 
@@ -18,5 +19,3 @@ $classes = array(
 
 $console = new $classes['Console']($classes);
 $console->init($argv, $argc);
-
-?>
