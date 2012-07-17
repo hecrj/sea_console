@@ -6,16 +6,15 @@ class Output
 {
 	
 	private static $colors = array(
-		'white' 	=> "\033[1;37m",
-		'green' 	=> "\033[1;32m",
-		'red'		=> "\033[1;31m",
-		'blue'		=> "\033[1;34m",
-		'cyan'		=> "\033[1;36m",
-		'yellow'	=> "\033[1;33m"
+		'white' 	=> 37,
+		'green' 	=> 32,
+		'red'		=> 31,
+		'blue'		=> 34,
+		'cyan'		=> 36,
+		'yellow'	=> 33
 	);
 	
 	private static $actions = array(
-		'working'	=> 'green',
 		'success'	=> 'green',
 		'created'	=> 'green',
 		'written'	=> 'cyan',
@@ -23,6 +22,8 @@ class Output
 		'failure'	=> 'red',
 		'removed'	=> 'red',
 		'exception' => 'red',
+		'error'		=> 'red',
+		'working'	=> 'yellow',
 		'invalid'	=> 'yellow',
 		'missing'	=> 'yellow'
 	);
@@ -51,7 +52,11 @@ class Output
 			return false;
 		
 		foreach($arguments as $argument)
-			echo '    '. self::$colors[self::$actions[$action]] . $action ."\033[0m    $argument\n";
+		{
+			echo '    ';
+			echo "\033[1;". self::$colors[self::$actions[$action]] . "m";
+			echo str_pad($action, 12) ."\033[0m $argument\n";
+		}
 	}
 	
 }
