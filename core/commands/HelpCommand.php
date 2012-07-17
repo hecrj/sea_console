@@ -8,10 +8,6 @@ class HelpCommand extends CommandAbstract
 		'project'	=>	false,
 	);
 	
-	protected $cmd_options = array(
-		'global'	=>	array('version' => 'v')
-	);
-	
 	protected $cmd_outside = 'project';
 	
 	public function project()
