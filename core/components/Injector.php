@@ -10,7 +10,8 @@ class Injector extends DynamicInjector
 		'file'			=>	'Core\\Components\\FileSystem\\File',
 		'filesys'		=>	'Core\\Components\\FileSystem\\FileSystem',
 		'options'		=>	'Core\\Components\\Options',
-		'output'		=>	'Core\\Components\\Output'
+		'output'		=>	'Core\\Components\\Output',
+		'shell'			=>	'Core\\Components\\Shell\\Shell'
 	);
 
 	protected $dependencies = array(
@@ -20,5 +21,5 @@ class Injector extends DynamicInjector
 		'output'	=>	array('options')
 	);
 	
-	protected $shared = array('file', 'dir', 'options', 'output');
+	protected $shared = array('file', 'dir', 'options', 'output', 'shell');
 }

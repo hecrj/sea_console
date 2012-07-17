@@ -5,7 +5,8 @@ namespace Core\Commands;
 class UpdateCommand extends CommandAbstract
 {
 	protected $syntax = array(
-		'console'	=> ''
+		'console'	=> '',
+		'project'	=> ''
 	);
 
 	protected $cmd_outside = 'console';
@@ -13,16 +14,31 @@ class UpdateCommand extends CommandAbstract
 	public function console()
 	{
 		$output = $this->get('output');
+		$shell = $this->get('shell');
 
 		$output->working('Updating Sea console...');
-		system(sprintf('cd %s && git pull --quiet origin master &> /dev/null', DIR));
+		$shell->execute('git pull origin master', DIR);
 
 		$output->working('Updating Sea project local copy...');
-		system(sprintf('cd %s && git submodule --quiet update project &> /dev/null', DIR));
+		$shell->execute('git submodule update project', DIR);
 
 		$output->working('Updating Sea core local copy...');
-		system(sprintf('cd %s && git submodule --quiet update core &> /dev/null', DIR.'project'));
+		$shell->execute('git submodule update core', DIR . 'project');
 
 		$output->success('Sea framework updated successfully!');
+	}
+
+	public function project()
+	{
+		$output = $this->get('output');
+		$shell = $this->get('shell');
+
+		$output->working('Updating current Sea project...');
+		$shell->execute('git pull origin master');
+
+		$output->working('Updating core submodule...');
+		$shell->execute('git submodule update core');
+
+		$output->success('Current Sea project updated successfully!');
 	}
 }

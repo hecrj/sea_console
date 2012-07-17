@@ -1,6 +1,8 @@
 <?php
 
 namespace Core;
+use Core\Components\Shell\ShellException;
+use Exception;
 
 class Console {
 	
@@ -35,10 +37,14 @@ class Console {
 			$command->init($arguments);
 		}
 
-		catch(\Exception $e)
+		catch(Exception $e)
 		{
 			$output = $injector->get('output');
 			$output->exception($e->getMessage());
+
+			if($e instanceof ShellException)
+				foreach($e->getData() as $error)
+					$output->error($error);
 			
 			exit;
 		}
