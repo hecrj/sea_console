@@ -14,6 +14,7 @@ class InstallCommand extends CommandAbstract
 	public function console()
 	{
 		$output = $this->get('output');
+		$shell = $this->get('shell');
 
 		$output->working('Detecting Operative System...');
 
@@ -28,10 +29,10 @@ class InstallCommand extends CommandAbstract
 			else
 			{
 				$output->working('Initializing and updating project submodule...');
-				system('git submodule --quiet update --init project &> /dev/null');
+				$shell->execute('git submodule update --init project', DIR);
 
 				$output->working('Initializing and updating core submodule...');
-				system('cd project && git submodule --quiet update --init core &> /dev/null');
+				$shell->execute('git submodule update --init core', DIR.'project');
 
 				$output->working('Installing Sea framework console...');
 

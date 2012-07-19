@@ -31,42 +31,50 @@ class NewCommand extends CommandAbstract
 	private function createProjectRemotely($path)
 	{
 		$output = $this->get('output');
+		$shell = $this->get('shell');
 		
 		$output->working(
 			'Creating new project remotely...',
 			'Downloading last Sea project version...'
 		);
-		system(sprintf('git clone --quiet git://github.com/hector0193/sea_project.git %s', $path));
+
+		$shell->execute(
+			sprintf('git clone git://github.com/hector0193/sea_project.git %s', $path)
+		);
 		
 		$output->working('Initializing Sea core submodule...');
-		system(sprintf('cd %s && git submodule --quiet init core', $path));
+		$shell->execute('git submodule init core', $path);
 		
 		$output->working('Downloading Sea core as project submodule...');
-		system(sprintf('cd %s && git submodule --quiet update core &> /dev/null', $path));
+		$shell->execute('git submodule update core', $path);
 	}
 	
 	private function createProjectLocally($path)
 	{
 		$output = $this->get('output');
+		$shell = $this->get('shell');
 		
 		$output->working(
 			'Creating new project...',
 			'Copying project data...'
 		);
-		system(sprintf('git clone --quiet %s %s', DIR_PROJECT, $path));
+
+		$shell->execute(
+			sprintf('git clone %s %s', DIR_PROJECT, $path)
+		);
 			
 		$output->working('Initializing core submodule...');
-		system(sprintf('cd %s && git submodule --quiet init core', $path));
+		$shell->execute('git submodule init core', $path);
 			
 		$output->working('Copying core submodule locally...');
-		system(sprintf('cd %s && git clone --quiet %s core', $path, DIR_CORE));
-			
-		$output->working('Getting Sea core submodule url...');
-		$core_url = exec(sprintf('cd %s && git config --get submodule.core.url', $path));
+		$shell->execute(
+			sprintf('git clone %s core', DIR_CORE),
+			$path
+		);
 		
 		$output->working('Setting remote URLs...');
-		system(sprintf('cd %s && git remote set-url origin git://github.com/hector0193/sea_project.git && cd core && '.
-				'git remote set-url origin git://github.com/hector0193/sea_core.git', $path));
+		$shell->execute('git remote set-url origin git://github.com/hector0193/sea_project.git', $path);
+		$shell->execute('git remote set-url origin git://github.com/hector0193/sea_core.git', $path.'/core');
 	}
 	
 	public function controller($controller, $actions)
