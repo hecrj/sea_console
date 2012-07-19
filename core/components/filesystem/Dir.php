@@ -48,7 +48,7 @@ class Dir
 				continue;
 			
 			if(is_dir($path . $object))
-				$this->remove($path . $object);
+				$this->remove($path . $object . '/');
 
 			else
 				$this->file->remove($path . $object);

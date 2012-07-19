@@ -23,7 +23,7 @@ class NewCommand extends CommandAbstract
 			$this->createProjectLocally($path);
 		
 		if($options->is('g', 'no-git'))
-			$this->get('dir')->setPath($path .'/.git/')->remove();
+			$this->get('dir')->remove("$path/.git/");
 		
 		$this->get('output')->success('Project created successfully.');
 	}
