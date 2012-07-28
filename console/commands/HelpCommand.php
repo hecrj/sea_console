@@ -1,6 +1,6 @@
 <?php
 
-namespace Core\Commands;
+namespace Sea\Console\Commands;
 
 class HelpCommand extends CommandAbstract
 {

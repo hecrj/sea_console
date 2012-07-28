@@ -1,7 +1,7 @@
 <?php
 
-namespace Core\Components;
-use Core\Commands\CommandAbstract;
+namespace Sea\Console\Components;
+use Sea\Console\Commands\CommandAbstract;
 
 /**
  * Represents the command options.

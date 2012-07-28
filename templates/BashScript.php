@@ -1,3 +1,3 @@
 #!/bin/bash
 
-php <?= $consoleDir ?>console $@
+php <?= $consoleDir ?>sea_console $@

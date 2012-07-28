@@ -1,6 +1,6 @@
 <?php
 
-namespace Core\Components;
+namespace Sea\Console\Components;
 
 # Autoloader class
 class Autoloader
@@ -17,6 +17,10 @@ class Autoloader
 	{
 		$namespaces = explode('\\', $name);
 		$class_name = array_pop($namespaces);
+
+		if($namespaces[0] == 'Sea')
+			array_shift($namespaces);
+
 		$path = strtolower(implode(DIRECTORY_SEPARATOR, $namespaces)) . DIRECTORY_SEPARATOR . $class_name. '.php';
 		
 		if(! is_file(DIR . $path))

@@ -1,7 +1,7 @@
 <?php
 
-namespace Core;
-use Core\Components\Shell\ShellException;
+namespace Sea\Console;
+use Sea\Console\Components\Shell\ShellException;
 use Exception;
 
 class Console {

@@ -1,0 +1,23 @@
+<?php
+
+namespace Sea\Console;
+
+define('DIR', dirname(__DIR__) . '/sea_console/');
+define('DIR_WORKING', getcwd() .'/');
+define('DIR_PROJECT', DIR . 'project/');
+define('DIR_CORE', DIR . 'project/core/');
+
+require(DIR . 'console/components/Autoloader.php');
+
+$autoloader = new Components\Autoloader;
+$autoloader->register();
+
+$classes = array(
+	'Arguments'		=>	'Sea\\Console\\Components\\Arguments',
+	'Command'		=>	'Sea\\Console\\Commands\\CommandAbstract',
+	'Console'		=>	'Sea\\Console\\Console',
+	'Injector'		=>	'Sea\\Console\\Components\\Injector'
+);
+
+$console = new $classes['Console']($classes);
+$console->init($argv, $argc);

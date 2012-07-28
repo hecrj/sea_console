@@ -1,6 +1,6 @@
 <?php
 
-namespace Core\Components\Shell;
+namespace Sea\Console\Components\Shell;
 use Exception;
 
 class ShellException extends Exception

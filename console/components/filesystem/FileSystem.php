@@ -1,6 +1,6 @@
 <?php
 
-namespace Core\Components\FileSystem;
+namespace Sea\Console\Components\FileSystem;
 
 class FileSystem
 {
