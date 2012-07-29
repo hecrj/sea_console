@@ -5,6 +5,7 @@ use Sea\Console\Components\Output;
 
 class Dir
 {
+	private $loader;
 	private $output;
 	private $file;
 	

@@ -2,22 +2,14 @@
 
 namespace Sea\Console;
 
-define('DIR', dirname(__DIR__) . '/sea_console/');
-define('DIR_WORKING', getcwd() .'/');
-define('DIR_PROJECT', DIR . 'project/');
-define('DIR_CORE', DIR . 'project/core/');
+$path = dirname(array_shift($argv)) . '/';
+require($path . 'console/components/Loader.php');
 
-require(DIR . 'console/components/Autoloader.php');
+$loader = new Components\Loader($path);
+$loader->register();
 
-$autoloader = new Components\Autoloader;
-$autoloader->register();
+$injector = new Components\Injector();
+$injector->set('loader', $loader);
 
-$classes = array(
-	'Arguments'		=>	'Sea\\Console\\Components\\Arguments',
-	'Command'		=>	'Sea\\Console\\Commands\\CommandAbstract',
-	'Console'		=>	'Sea\\Console\\Console',
-	'Injector'		=>	'Sea\\Console\\Components\\Injector'
-);
-
-$console = new $classes['Console']($classes);
-$console->init($argv, $argc);
+$console = new Console($argv);
+$console->init($injector);

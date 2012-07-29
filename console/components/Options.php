@@ -22,10 +22,8 @@ class Options
 		$this->available = $available;
 	}
 	
-	public function extractOptionsFrom(Arguments $arguments)
+	public function setOptions(Array $options)
 	{	
-		$options = $arguments->extract(self::OPTION_PREG);
-		
 		foreach($options as $option)
 			$this->setOption($option);
 	}
@@ -38,6 +36,11 @@ class Options
 			$this->options[$name] = $option['value'];
 		else
 			$this->options[$name] = true;
+	}
+
+	public function getFormat()
+	{
+		return self::OPTION_PREG;
 	}
 	
 	public function get($simple = null, $extended = null)

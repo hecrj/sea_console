@@ -14,20 +14,18 @@ class RmCommand extends CommandAbstract
 	{	
 		$name = ucwords($controller) .'Controller';
 		
-		$this->get('filesys')
-				->setPath('app/controllers/')
-				->remove($name, '.php');
-		
+		$this->get('file')->remove("app/controllers/$name.php");		
 		$this->views($controller);
 	}
 	
 	public function views($controller, $views = array())
 	{
 		if(empty($views))
-			return $this->get('filesys')->setPath('app/views/'. $controller)->remove();
+			return $this->get('dir')->remove("app/views/$controller/");
 		
-		foreach($views as $view)
-			$this->view($controller, $view);
+		else
+			foreach($views as $view)
+				$this->view($controller, $view);
 	}
 	
 	private function view($controller, $view)

@@ -1,18 +1,21 @@
 <?php
 
 namespace Sea\Console\Components\FileSystem;
+use Sea\Console\Components\Loader;
 
 class FileSystem
 {
 	private $dir;
 	private $file;
+	private $loader;
 	private $path;
 	private $data;
 	
-	public function __construct(Dir $dir, File $file)
+	public function __construct(Dir $dir, File $file, Loader $loader)
 	{
 		$this->dir = $dir;
 		$this->file = $file;
+		$this->loader = $loader;
 		$this->path = '';
 		$this->data = array();
 	}
@@ -54,8 +57,7 @@ class FileSystem
 	{
 		ob_start();
 		
-		extract($this->data);
-		require(DIR . 'templates/'. $template .'.php');
+		$this->loader->loadFile("templates/$template.php", $this->data);
 		
 		$content = ob_get_contents();
 		

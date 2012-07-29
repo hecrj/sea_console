@@ -6,11 +6,12 @@ abstract class DynamicInjector
 {
 	protected $classes;
 	protected $dependencies;
-	protected $shared = true;
+	protected $shared = array();
 	private   $instances = array();
 	
 	public function __construct()
-	{}
+	{
+	}
 	
 	public function set($name, $instance)
 	{
@@ -22,7 +23,7 @@ abstract class DynamicInjector
         return $this->classes[$name];
     }
 	
-	public function get($name)
+	public function get($name, Array $params = null)
 	{
 		if(isset($this->instances[$name]))
 			return $this->instances[$name];
@@ -30,48 +31,46 @@ abstract class DynamicInjector
 		if(!isset($this->classes[$name]))
 			throw new \RuntimeException('Unsetted class name: '. $name .'. Check your class: '. get_class($this));
 		
-		return $this->saveInstance($name, $this->inject($name));
+		return $this->saveInstance($name, $this->inject($name, $params));
 	}
 	
 	private function saveInstance($name, $instance)
 	{
-		if($this->shared !== FALSE and ($this->shared === TRUE or in_array($name, $this->shared)))
+		if(in_array($name, $this->shared))
 			$this->instances[$name] = $instance;
 		
 		return $instance;
 	}
 	
-	public function inject($name, $dependencies = null)
+	private function inject($name, Array $params = null)
 	{
 		$class_name = $this->classes[$name];
 		$dependencies = array();
 
 		if(isset($this->dependencies[$name]))
 			$dependencies = $this->dependencies[$name];
-
-		$injections = array();
 		
 		foreach($dependencies as $dependency)
-			$injections[] = $this->getDependency($dependency);
+			$params[] = $this->getDependency($dependency);
 		
-		$inject_num = count($injections);
+		$num_params = count($params);
 		
-		switch($inject_num)
+		switch($num_params)
 		{
 			case 0: $instance = new $class_name(); break;
-		    case 1: $instance = new $class_name($injections[0]); break;
-		    case 2: $instance = new $class_name($injections[0], $injections[1]); break;
-		    case 3: $instance = new $class_name($injections[0], $injections[1], $injections[2]); break;
-		    case 4: $instance = new $class_name($injections[0], $injections[1], $injections[2], $injections[3]); break;
-		    case 5: $instance = new $class_name($injections[0], $injections[1], $injections[2], $injections[3], $injections[4]); break;
-		    case 6: $instance = new $class_name($injections[0], $injections[1], $injections[2], $injections[3], $injections[4], $injections[5]); break;
-		    case 7: $instance = new $class_name($injections[0], $injections[1], $injections[2], $injections[3], $injections[4], $injections[5], $injections[6]); break;
-		    case 8: $instance = new $class_name($injections[0], $injections[1], $injections[2], $injections[3], $injections[4], $injections[5], $injections[6], $injections[7]); break;
-		    case 9: $instance = new $class_name($injections[0], $injections[1], $injections[2], $injections[3], $injections[4], $injections[5], $injections[6], $injections[7], $injections[8]); break;
+		    case 1: $instance = new $class_name($params[0]); break;
+		    case 2: $instance = new $class_name($params[0], $params[1]); break;
+		    case 3: $instance = new $class_name($params[0], $params[1], $params[2]); break;
+		    case 4: $instance = new $class_name($params[0], $params[1], $params[2], $params[3]); break;
+		    case 5: $instance = new $class_name($params[0], $params[1], $params[2], $params[3], $params[4]); break;
+		    case 6: $instance = new $class_name($params[0], $params[1], $params[2], $params[3], $params[4], $params[5]); break;
+		    case 7: $instance = new $class_name($params[0], $params[1], $params[2], $params[3], $params[4], $params[5], $params[6]); break;
+		    case 8: $instance = new $class_name($params[0], $params[1], $params[2], $params[3], $params[4], $params[5], $params[6], $params[7]); break;
+		    case 9: $instance = new $class_name($params[0], $params[1], $params[2], $params[3], $params[4], $params[5], $params[6], $params[7], $params[8]); break;
 		    
 			default:
 				$r = new ReflectionClass($class_name);
-				$instance = $r->newInstanceArgs($injections);
+				$instance = $r->newInstanceArgs($params);
 		}
 		
 		return $instance;

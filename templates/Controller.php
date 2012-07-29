@@ -1,7 +1,7 @@
 <?php echo '<?php'."\n"; ?>
 
-namespace App\Controllers;
-use Sea\Console\Controller;
+namespace Sea\App\Controllers;
+use Sea\Core\Controller;
 
 class <?php echo $name ?> extends Controller
 {

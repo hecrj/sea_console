@@ -1,39 +1,38 @@
 <?php
 
 namespace Sea\Console;
+
 use Sea\Console\Components\Shell\ShellException;
+use Sea\Console\Components\DynamicInjector;
 use Exception;
 
 class Console {
 	
-	private $classes;
-	private $path;
+	private $args;
 	
-	public function __construct(Array $classes)
+	public function __construct(Array $args)
 	{
-		$this->classes = $classes;
+		$this->args = $args;
 	}
 	
-	public function init($arguments, $num)
+	public function init(DynamicInjector $injector)
 	{	
 		define("NAME_PREG", '/^([a-z]+)$/');
 		
-		$injector = new $this->classes['Injector'];
-		
 		try
-		{	
-			$this->path = array_shift($arguments);
-			
-			$arguments = new $this->classes['Arguments']($arguments);
+		{
+			$arguments = $injector->get('arguments', array($this->args));
 			$options = $injector->get('options');
-			$options->extractOptionsFrom($arguments);
+
+			$opt = $arguments->extract($options->getFormat());
+			$options->setOptions($opt);
 			
-			$commandName = $arguments->shift() ?: 'help';
-		
-			$commandAbstractClass = $this->classes['Command'];
-			$commandClass = $commandAbstractClass::getCommandClass($commandName);
+			$command_name = $arguments->shift() ?: 'help';
+
+			$finder = $injector->get('finder');
+			$command_class = $finder->find('command_class', $command_name);
 			
-			$command = new $commandClass($injector);
+			$command = new $command_class($injector);
 			$command->init($arguments);
 		}
 
@@ -49,11 +48,6 @@ class Console {
 			exit;
 		}
 	
-	}
-	
-	public function getPath()
-	{
-		return $this->path;
 	}
 	
 }
