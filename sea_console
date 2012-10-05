@@ -1,11 +1,12 @@
 <?php
 
-namespace Sea\Console;
+namespace Console;
 
-$path = dirname(array_shift($argv)) . '/';
-require($path . 'console/components/Loader.php');
+define('Console\DIR', __DIR__ . '/');
 
-$loader = new Components\Loader($path);
+require(DIR . 'console/components/Loader.php');
+
+$loader = new Components\Loader();
 $loader->register();
 
 $injector = new Components\Injector();

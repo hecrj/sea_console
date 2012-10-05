@@ -1,20 +1,20 @@
 <?php
 
-namespace Sea\Console\Components;
+namespace Console\Components;
 
 class Injector extends DynamicInjector
 {
 	
 	protected $classes = array(
-		'arguments'		=>	'Sea\\Console\\Components\\Arguments',
-		'dir'			=>	'Sea\\Console\\Components\\FileSystem\\Dir',
-		'file'			=>	'Sea\\Console\\Components\\FileSystem\\File',
-		'filesys'		=>	'Sea\\Console\\Components\\FileSystem\\FileSystem',
-		'finder'		=>	'Sea\\Console\\Components\\Finder',
-		'loader'		=>	'Sea\\Console\\Components\\Loader',
-		'options'		=>	'Sea\\Console\\Components\\Options',
-		'output'		=>	'Sea\\Console\\Components\\Output',
-		'shell'			=>	'Sea\\Console\\Components\\Shell\\Shell'
+		'arguments'		=>	'Console\\Components\\Arguments',
+		'dir'			=>	'Console\\Components\\FileSystem\\Dir',
+		'file'			=>	'Console\\Components\\FileSystem\\File',
+		'filesys'		=>	'Console\\Components\\FileSystem\\FileSystem',
+		'finder'		=>	'Console\\Components\\Finder',
+		'loader'		=>	'Console\\Components\\Loader',
+		'options'		=>	'Console\\Components\\Options',
+		'output'		=>	'Console\\Components\\Output',
+		'shell'			=>	'Console\\Components\\Shell\\Shell'
 	);
 
 	protected $dependencies = array(

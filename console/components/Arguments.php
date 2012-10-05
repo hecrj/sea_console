@@ -1,7 +1,7 @@
 <?php
 
-namespace Sea\Console\Components;
-use Sea\Console\Commands\CommandAbstract;
+namespace Console\Components;
+use Console\Commands\CommandAbstract;
 
 /**
  * Represents the console arguments.

@@ -1,11 +1,11 @@
 <?php
 
-namespace Sea\Console\Components;
+namespace Console\Components;
 
 class Finder
 {
 	protected $resources = array(
-		'command_class' => 'Sea\\Console\\Commands\\%sCommand'
+		'command_class' => 'Console\\Commands\\%sCommand'
 	);
 	
 	public function __construct()

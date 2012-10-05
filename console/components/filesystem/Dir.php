@@ -1,7 +1,7 @@
 <?php
 
-namespace Sea\Console\Components\FileSystem;
-use Sea\Console\Components\Output;
+namespace Console\Components\FileSystem;
+use Console\Components\Output;
 
 class Dir
 {

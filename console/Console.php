@@ -1,9 +1,9 @@
 <?php
 
-namespace Sea\Console;
+namespace Console;
 
-use Sea\Console\Components\Shell\ShellException;
-use Sea\Console\Components\DynamicInjector;
+use Console\Components\Shell\ShellException;
+use Console\Components\DynamicInjector;
 use Exception;
 
 class Console {
@@ -12,11 +12,13 @@ class Console {
 	
 	public function __construct(Array $args)
 	{
+		array_shift($args); // Throw path argument
 		$this->args = $args;
 	}
 	
 	public function init(DynamicInjector $injector)
-	{	
+	{
+		require(__DIR__ . '/config/console.php');
 		define("NAME_PREG", '/^([a-z]+)$/');
 		
 		try

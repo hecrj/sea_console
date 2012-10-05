@@ -1,8 +1,8 @@
 <?php
 
-namespace Sea\Console\Commands;
-use Sea\Console\Components\DynamicInjector;
-use Sea\Console\Components\Arguments;
+namespace Console\Commands;
+use Console\Components\DynamicInjector;
+use Console\Components\Arguments;
 
 abstract class CommandAbstract {
 	

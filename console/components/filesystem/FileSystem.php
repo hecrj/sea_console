@@ -1,7 +1,7 @@
 <?php
 
-namespace Sea\Console\Components\FileSystem;
-use Sea\Console\Components\Loader;
+namespace Console\Components\FileSystem;
+use Console\Components\Loader;
 
 class FileSystem
 {

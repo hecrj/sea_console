@@ -1,6 +1,6 @@
 <?php
 
-namespace Sea\Console\Commands;
+namespace Console\Commands;
 
 class NewCommand extends CommandAbstract
 {
@@ -39,14 +39,14 @@ class NewCommand extends CommandAbstract
 		);
 
 		$shell->execute(
-			sprintf('git clone git://github.com/hector0193/sea_project.git %s', $path)
+			sprintf('git clone %s %s', \Console\Repos\PROJECT, $path)
 		);
 		
 		$output->working('Initializing Sea core submodule...');
-		$shell->execute('git submodule init core', $path);
+		$shell->execute('git submodule init sea', $path);
 		
 		$output->working('Downloading Sea core as project submodule...');
-		$shell->execute('git submodule update core', $path);
+		$shell->execute('git submodule update sea', $path);
 	}
 	
 	private function createProjectLocally($path)
@@ -60,21 +60,27 @@ class NewCommand extends CommandAbstract
 		);
 
 		$shell->execute(
-			sprintf('git clone %s %s', DIR_PROJECT, $path)
+			sprintf('git clone %s %s', \Console\DIR.'project', $path)
 		);
 			
 		$output->working('Initializing core submodule...');
-		$shell->execute('git submodule init core', $path);
+		$shell->execute('git submodule init sea', $path);
 			
 		$output->working('Copying core submodule locally...');
 		$shell->execute(
-			sprintf('git clone %s core', DIR_CORE),
+			sprintf('git clone %s sea', \Console\DIR.'project/sea'),
 			$path
 		);
 		
 		$output->working('Setting remote URLs...');
-		$shell->execute('git remote set-url origin git://github.com/hector0193/sea_project.git', $path);
-		$shell->execute('git remote set-url origin git://github.com/hector0193/sea_core.git', $path.'/core');
+		$shell->execute(
+			sprintf('git remote set-url origin %s', \Console\Repos\PROJECT),
+			$path
+		);
+		$shell->execute(
+			sprintf('git remote set-url origin %s', \Console\Repos\CORE),
+			$path.'/core'
+		);
 	}
 	
 	public function controller($controller, $actions)

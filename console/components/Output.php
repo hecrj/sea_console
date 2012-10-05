@@ -1,6 +1,6 @@
 <?php
 
-namespace Sea\Console\Components;
+namespace Console\Components;
 
 class Output
 {
