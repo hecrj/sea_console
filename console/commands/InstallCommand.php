@@ -32,7 +32,7 @@ class InstallCommand extends CommandAbstract
 				$shell->execute('git submodule update --init project', \Console\DIR);
 
 				$output->working('Initializing and updating core submodule...');
-				$shell->execute('git submodule update --init core', \Console\DIR.'project');
+				$shell->execute('git submodule update --init sea', \Console\DIR.'project');
 
 				$output->working('Installing Sea framework console...');
 

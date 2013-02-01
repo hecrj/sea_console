@@ -17,13 +17,13 @@ class HelpCommand extends CommandAbstract
 		
 		if($options->is('v', 'version'))
 		{
-			require(DIR . 'version.php');
-			require(DIR_CORE . 'version.php');
+			require(\Console\DIR . 'version.php');
+			require(\Console\DIR . 'project/sea/version.php');
 			
 			$output->text(
 				'Local versions:',
 				'  Sea console   '. \Console\MAJOR .'.'. \Console\MINOR .'.'. \Console\TINY .' '. \Console\PRE,
-				'  Sea core      '. \Core\MAJOR .'.'. \Core\MINOR .'.'. \Core\TINY .' '. \Core\PRE
+				'  Sea core      '. \Sea\MAJOR .'.'. \Sea\MINOR .'.'. \Sea\TINY .' '. \Sea\PRE
 			);
 			
 			exit;
