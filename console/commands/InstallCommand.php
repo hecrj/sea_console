@@ -29,16 +29,16 @@ class InstallCommand extends CommandAbstract
 			else
 			{
 				$output->working('Initializing and updating project submodule...');
-				$shell->execute('git submodule update --init project', DIR);
+				$shell->execute('git submodule update --init project', \Console\DIR);
 
 				$output->working('Initializing and updating core submodule...');
-				$shell->execute('git submodule update --init core', DIR.'project');
+				$shell->execute('git submodule update --init core', \Console\DIR.'project');
 
 				$output->working('Installing Sea framework console...');
 
 				$this->get('filesys')
 					->setPath('/usr/bin/')
-					->set('consoleDir', DIR)
+					->set('consoleDir', \Console\DIR)
 					->generate('BashScript', 'sea', '');
 
 				$output->working('Setting executable permissions...');

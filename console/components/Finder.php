@@ -18,7 +18,7 @@ class Finder
 		if(! isset($this->resources[$resource]))
 			throw new \RuntimeException("Resource $resource not defined. Check your ". get_class() ." class.");
 
-		return sprintf($this->resources[$resource], $value);
+		return sprintf($this->resources[$resource], ucfirst($value));
 	}
 
 }

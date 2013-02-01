@@ -2,7 +2,6 @@
 
 namespace Console\Components;
 
-# Autoloader class
 class Loader
 {
 
